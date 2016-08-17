@@ -1,0 +1,27 @@
+/* *****************************- 顶部导航条a标签的默认效果  -******************************** */
+.navbar .navbar-nav>li>a {
+    background: transparent;
+    color: rgba(247, 247 ,247, .75);
+}
+.navbar-default .navbar-nav>.active>a,
+.navbar-default .navbar-nav>.active>a:focus,
+.navbar-default .navbar-nav>.active>a:hover{
+    background: rgba(0,0,0,.1);
+    color: #fff;
+}
+.ace-settings-container{
+    top: 60px;
+}
+@media only screen and (max-width: 991px)  {
+    .navbar .navbar-nav>li, .navbar .navbar-nav>li {
+        display: inline-block;
+    }
+}
+/* *****************************- sidebar  -******************************** */
+#sidebar {
+    z-index: 1025;
+}
+#ace-settings-container {z-index: 1000;}
+/* *****************************- 音频面板  -******************************** */
+.widget-main .main-left{float: left;  width: 150px;}
+.widget-main .main-right{margin-left: 150px;/*==等于左边栏宽度==*/}
