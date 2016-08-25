@@ -1,0 +1,11 @@
+[2016-08-18 16:59:05.527] [WARN] http - GET /logout
+[2016-08-18 16:59:05.535] [WARN] http - GET /
+[2016-08-18 16:59:05.546] [INFO] http - GET /login
+[2016-08-18 16:59:05.608] [INFO] http - GET /captcha
+[2016-08-18 16:59:05.683] [WARN] http - GET /stylesheets/Ace_template_css/images/meteorshower2.jpg
+[2016-08-18 16:59:05.707] [INFO] http - GET /favicon.ico
+[2016-08-18 16:59:11.795] [INFO] http - POST /captcha
+[2016-08-18 16:59:11.871] [WARN] http - POST /login
+[2016-08-18 16:59:11.878] [WARN] http - GET /
+[2016-08-18 16:59:11.894] [WARN] http - GET /site/29295709/72906112
+[2016-08-18 16:59:12.163] [INFO] http - GET /favicon.ico

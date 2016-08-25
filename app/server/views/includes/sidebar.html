@@ -54,7 +54,7 @@
             <ul class="submenu">
                 <% b.sites.forEach(function(c){ %>
                 <li class="<%if(c.siteID==currentSiteID){%>active<%}%>">
-                    <a href='/site/<%= b.projID %>/<%= c.siteID %>'>
+                    <a href='/user/monitor/<%= b.projID %>/<%= c.siteID %>'>
                         <i class="menu-icon fa fa-caret-right"></i>
                         <%= c.siteName %>
                     </a>

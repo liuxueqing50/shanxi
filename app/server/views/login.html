@@ -34,11 +34,8 @@
     <script src="/javascripts/Ace_template_js/respond.min.js"></script>
     <![endif]-->
 
-    <style>
-        .error {
-            color: red;
-        }
-    </style>
+    <!-- inline styles related to this page -->
+    <link rel="stylesheet" href="/stylesheets/customs/pages/form.css"/>
 </head>
 
 <body class="login-layout blur-login">
@@ -49,7 +46,7 @@
                 <div class="login-container">
                     <div class="center">
                         <h1>
-                            <i class="ace-icon fa fa-leaf green"></i>
+                            <i class="ace-icon fa fa-cloud green"></i>
                             <span class="red">山西-吉兆</span>
                             <span class="white" id="id-text2"> FM监听系统</span>
                         </h1>
@@ -85,6 +82,13 @@
                                                                    placeholder="密码"/>
 															<i class="ace-icon fa fa-lock"></i>
 														</span>
+                                            </label>
+
+                                            <label class="block clearfix">
+														<span class="col-xs-7 captcha-ipt input-icon input-icon-right">
+															<input id="captcha" type="text" name="captcha" class="form-control"  placeholder="验证码"/>
+														</span>
+                                                        <iframe id="loginIframe" class="col-xs-5 captcha-svg" src="/captcha"></iframe>
                                             </label>
 
                                             <div class="space"></div>
@@ -294,6 +298,22 @@
     </div><!-- /.main-content -->
 </div><!-- /.main-container -->
 
+<!-- 注册提示信息模态框 -->
+<div class="modal fade" id="formInfoBox" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">提示信息</h4>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- basic scripts -->
 
 <!--[if !IE]> -->
@@ -310,94 +330,11 @@
 
 <!-- page specific plugin scripts -->
 <script src="/bower_components/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="/javascripts/Ace_template_js/bootstrap.min.js"></script>
 <script src="/bower_components/jquery-validation/dist/localization/messages_zh.js"></script>
+<script src="/javascripts/customs/pages/form.js"></script>
 
 <!-- inline scripts related to this page -->
-<script>
-
-    $().ready(function () {
-
-        var signinValidator = $("#signinForm").validate({
-            rules: {
-                user: {
-                    required: true,
-                    email: true
-                },
-                pass: {
-                    required: true,
-                    minlength: 6
-                }
-            },
-            messages: {
-                user: {
-                    required: "用户名不能为空",
-                    email: "请输入正确的邮箱帐号"
-                },
-                pass: {
-                    required: "请输入确认密码",
-                    minlength: "确认密码不能小于6个字符",
-                }
-            }
-        });
-
-
-        var signupValidator = $("#signupForm").validate({
-            errorPlacement: function (error, element) {
-                // Append error within linked label
-                $(element)
-                        .closest("form")
-                        .find("label[for='" + element.attr("id") + "']")
-                        .append(error);
-            },
-            errorElement: "span",
-            rules: {
-                email: {
-                    required: true,
-                    email: true
-                },
-                name: {
-                    required: true,
-                    minlength: 4
-                },
-                password: {
-                    required: true,
-                    minlength: 6
-                },
-                pass: {
-                    required: true,
-                    minlength: 6,
-                    equalTo: "#password"
-                },
-                agreement: {
-                    required: true
-                }
-            },
-            messages: {
-                name: {
-                    required: "用户名不能为空",
-                    minlength: "用户名不能小于6个字符"
-                },
-                password: {
-                    required: "请输入密码",
-                    minlength: "确认密码不能小于6个字符"
-                },
-                pass: {
-                    required: "请输入确认密码",
-                    minlength: "确认密码不能小于6个字符",
-                    equalTo: "两次输入密码不一致不一致"
-                },
-                agree: {
-                    required: "请接受用户声明!"
-                }
-            }
-        });
-
-        $("#signupReset").click(function () {
-            signupValidator.resetForm();
-        });
-    });
-
-</script>
 <script type="text/javascript">
     jQuery(function ($) {
         $(document).on('click', '.toolbar a[data-target]', function (e) {

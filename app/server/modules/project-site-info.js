@@ -2,7 +2,6 @@
 var crypto 		= require('crypto');
 var MongoDB 	= require('mongodb').Db;
 var Server 		= require('mongodb').Server;
-var moment 		= require('moment');
 var config	 	= require("../../../config/config");
 
 
@@ -25,7 +24,7 @@ db.open(function(e, d){
                 }
             });
         }	else{
-            console.log('mongo :: connected to database :: "'+dbName+'"');
+            //console.log('mongo :: connected to database :: "'+dbName+'"');
         }
     }
 });

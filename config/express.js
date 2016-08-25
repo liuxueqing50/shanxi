@@ -8,16 +8,12 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var MongoStore = require('connect-mongo')(session);
 var config = require("./config");
-var log4js = require('../config/log4js');
-var logger = log4js.getLogger('normal');
+var log = require('../config/log4js');
 var path = require('path');
 var favicon = require('serve-favicon');
 var flash = require('express-flash');
 var crypto = require('crypto');
 
-
-
-logger.setLevel('INFO');    //设置日志模块记录等级
 
 module.exports = function() {
     console.log('init express...');
@@ -36,7 +32,7 @@ module.exports = function() {
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(require('stylus').middleware({ src: './app/public' }));
     app.use(express.static('./app/public'));
-    app.use(log4js.connectLogger(logger, {level: 'auto', format:':method :url'}));
+    log.use(app);
     // mongoDB database
     var dbURL = 'mongodb://'+config.mongodb.dbHost+':'+config.mongodb.dbPort+'/'+config.mongodb.dbName;
     app.use(session({
@@ -54,6 +50,7 @@ module.exports = function() {
 
         next();  //中间件传递
     });
+
 
     require('../app/server/routes')(app);
 
