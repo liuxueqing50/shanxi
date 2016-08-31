@@ -2,14 +2,13 @@
  * Created by Liuwei on 2016/8/18.
  */
 /**
- * form js for addUser
+ * form js for editUser
  */
 
 $(document).ready(function () {
-    var signupValidator = $("#signupForm").validate({
+    var editUserValidator = $("#editUserForm").validate({
         errorPlacement: function (error, element) {
             // Append error within linked label
-            console.log( $(element))
             $(element)
                 .after(error)
         },
@@ -20,11 +19,11 @@ $(document).ready(function () {
                 email: true,
                 remote: {  //验证Email是否存在
                     type: "POST",
-                    url: "/admin/user/checkConfirm",             //servlet
+                    url: "/admin/user/checkEditConfirm",             //servlet
                     dataType: "json",           //接受数据格式
                     data: {
                         captcha: function () {
-                            return $("#cemail").val();
+                            return $("#email").val();
                         }
                     }
                 }
@@ -32,15 +31,6 @@ $(document).ready(function () {
             name: {
                 required: true,
                 minlength: 4
-            },
-            password: {
-                required: true,
-                minlength: 6
-            },
-            pass: {
-                required: true,
-                minlength: 6,
-                equalTo: "#password"
             }
         },
         messages: {
@@ -51,15 +41,6 @@ $(document).ready(function () {
             name: {
                 required: "用户名不能为空",
                 minlength: "用户名不能小于6个字符"
-            },
-            password: {
-                required: "请输入密码",
-                minlength: "确认密码不能小于6个字符"
-            },
-            pass: {
-                required: "请输入确认密码",
-                minlength: "确认密码不能小于6个字符",
-                equalTo: "两次输入密码不一致不一致"
             }
         },
         invalidHandler: function () {
@@ -69,25 +50,25 @@ $(document).ready(function () {
             //表单的处理
             $.ajax({
                 type: "POST",
-                url: "/admin/user/addUser",             //servlet
+                url: "/admin/user/updateAccount",             //servlet
                 dataType: "json",           //接受数据格式
-                data: $("#signupForm").serialize(),
+                data: $("#editUserForm").serialize(),
                 error: function (err) {
                     alert(err)
                 },
                 success: function (result) {
                     if(result == "true") {
-                        $('#formInfoBox').find(".modal-body").html("用户新建成功！");
+                        $('#formInfoBox').find(".modal-body").html("修改成功！");
                         $('#formInfoBox').modal();
                         $('#formInfoBox').on('hidden.bs.modal', function (e) {
                             window.location.href="/admin/user"
                         })
                     }
                     if(result == "false") {
-                        $('#formInfoBox').find(".modal-body").html("用户新建失败！");
+                        $('#formInfoBox').find(".modal-body").html("修改失败！");
                         $('#formInfoBox').modal();
                         $('#formInfoBox').on('hidden.bs.modal', function (e) {
-                            signupValidator.resetForm();
+                            editUserValidator.resetForm();
                         })
                     }
                 }
@@ -96,7 +77,7 @@ $(document).ready(function () {
         }
     });
 
-    $("#signupReset").click(function () {
-        signupValidator.resetForm();
+    $("#editCancel").click(function () {
+        window.location.href="/admin/user"
     });
 });

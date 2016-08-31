@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta charset="utf-8"/>
-    <title>Two Menu Style - Ace Admin</title>
+    <title><%= title %></title>
 
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="/stylesheets/Ace_template_css/jquery-ui.min.css"/>
     <link rel="stylesheet" href="/stylesheets/Ace_template_css/bootstrap-datepicker3.min.css"/>
     <link rel="stylesheet" href="/stylesheets/Ace_template_css/ui.jqgrid.min.css"/>
+    <link rel="stylesheet" href="/bower_components/Messenger/css/messenger.css"/>
+    <link rel="stylesheet" href="/bower_components/Messenger/css/messenger-theme-future.css"/>
 
     <!-- text fonts -->
     <link rel="stylesheet" href="/stylesheets/Ace_template_css/fonts.googleapis.com.css"/>
@@ -48,281 +50,7 @@
 </head>
 
 <body class="no-skin">
-<div id="navbar" class="navbar navbar-default    navbar-collapse       h-navbar ace-save-state">
-    <div class="navbar-container ace-save-state" id="navbar-container">
-        <div class="navbar-header pull-left">
-            <a href="index.html" class="navbar-brand">
-                <small>
-                    <i class="fa fa-cloud"></i>
-                    山西-吉兆 FM监听系统
-                </small>
-            </a>
-
-            <button class="pull-right navbar-toggle navbar-toggle-img collapsed" type="button" data-toggle="collapse"
-                    data-target=".navbar-buttons,.navbar-menu">
-                <span class="sr-only">Toggle user menu</span>
-
-                <img src="/images/Ace_template_images/avatars/user.jpg" alt="Jason's Photo"/>
-            </button>
-
-            <button class="pull-right navbar-toggle collapsed" type="button" data-toggle="collapse"
-                    data-target="#sidebar">
-                <span class="sr-only">Toggle sidebar</span>
-
-                <span class="icon-bar"></span>
-
-                <span class="icon-bar"></span>
-
-                <span class="icon-bar"></span>
-            </button>
-        </div>
-
-        <div class="navbar-buttons navbar-header pull-right  collapse navbar-collapse" role="navigation">
-            <ul class="nav ace-nav">
-                <li class="transparent dropdown-modal">
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <i class="ace-icon fa fa-bell icon-animated-bell"></i>
-                    </a>
-
-                    <div class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
-                        <div class="tabbable">
-                            <ul class="nav nav-tabs">
-                                <li class="active">
-                                    <a data-toggle="tab" href="#navbar-tasks">
-                                        Tasks
-                                        <span class="badge badge-danger">4</span>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a data-toggle="tab" href="#navbar-messages">
-                                        Messages
-                                        <span class="badge badge-danger">5</span>
-                                    </a>
-                                </li>
-                            </ul><!-- .nav-tabs -->
-
-                            <div class="tab-content">
-                                <div id="navbar-tasks" class="tab-pane in active">
-                                    <ul class="dropdown-menu-right dropdown-navbar dropdown-menu">
-                                        <li class="dropdown-content">
-                                            <ul class="dropdown-menu dropdown-navbar">
-                                                <li>
-                                                    <a href="#">
-                                                        <div class="clearfix">
-                                                            <span class="pull-left">Software Update</span>
-                                                            <span class="pull-right">65%</span>
-                                                        </div>
-
-                                                        <div class="progress progress-mini">
-                                                            <div style="width:65%" class="progress-bar"></div>
-                                                        </div>
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a href="#">
-                                                        <div class="clearfix">
-                                                            <span class="pull-left">Hardware Upgrade</span>
-                                                            <span class="pull-right">35%</span>
-                                                        </div>
-
-                                                        <div class="progress progress-mini">
-                                                            <div style="width:35%"
-                                                                 class="progress-bar progress-bar-danger"></div>
-                                                        </div>
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a href="#">
-                                                        <div class="clearfix">
-                                                            <span class="pull-left">Unit Testing</span>
-                                                            <span class="pull-right">15%</span>
-                                                        </div>
-
-                                                        <div class="progress progress-mini">
-                                                            <div style="width:15%"
-                                                                 class="progress-bar progress-bar-warning"></div>
-                                                        </div>
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a href="#">
-                                                        <div class="clearfix">
-                                                            <span class="pull-left">Bug Fixes</span>
-                                                            <span class="pull-right">90%</span>
-                                                        </div>
-
-                                                        <div class="progress progress-mini progress-striped active">
-                                                            <div style="width:90%"
-                                                                 class="progress-bar progress-bar-success"></div>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-
-                                        <li class="dropdown-footer">
-                                            <a href="#">
-                                                See tasks with details
-                                                <i class="ace-icon fa fa-arrow-right"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div><!-- /.tab-pane -->
-
-                                <div id="navbar-messages" class="tab-pane">
-                                    <ul class="dropdown-menu-right dropdown-navbar dropdown-menu">
-                                        <li class="dropdown-content">
-                                            <ul class="dropdown-menu dropdown-navbar">
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="/images/Ace_template_images/avatars/avatar.png"
-                                                             class="msg-photo" alt="Alex's Avatar"/>
-																<span class="msg-body">
-																	<span class="msg-title">
-																		<span class="blue">Alex:</span>
-																		Ciao sociis natoque penatibus et auctor ...
-																	</span>
-
-																	<span class="msg-time">
-																		<i class="ace-icon fa fa-clock-o"></i>
-																		<span>a moment ago</span>
-																	</span>
-																</span>
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="/images/Ace_template_images/avatars/avatar3.png"
-                                                             class="msg-photo" alt="Susan's Avatar"/>
-																<span class="msg-body">
-																	<span class="msg-title">
-																		<span class="blue">Susan:</span>
-																		Vestibulum id ligula porta felis euismod ...
-																	</span>
-
-																	<span class="msg-time">
-																		<i class="ace-icon fa fa-clock-o"></i>
-																		<span>20 minutes ago</span>
-																	</span>
-																</span>
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="/images/Ace_template_images/avatars/avatar4.png"
-                                                             class="msg-photo" alt="Bob's Avatar"/>
-																<span class="msg-body">
-																	<span class="msg-title">
-																		<span class="blue">Bob:</span>
-																		Nullam quis risus eget urna mollis ornare ...
-																	</span>
-
-																	<span class="msg-time">
-																		<i class="ace-icon fa fa-clock-o"></i>
-																		<span>3:15 pm</span>
-																	</span>
-																</span>
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="/images/Ace_template_images/avatars/avatar2.png"
-                                                             class="msg-photo" alt="Kate's Avatar"/>
-																<span class="msg-body">
-																	<span class="msg-title">
-																		<span class="blue">Kate:</span>
-																		Ciao sociis natoque eget urna mollis ornare ...
-																	</span>
-
-																	<span class="msg-time">
-																		<i class="ace-icon fa fa-clock-o"></i>
-																		<span>1:33 pm</span>
-																	</span>
-																</span>
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="/images/Ace_template_images/avatars/avatar5.png"
-                                                             class="msg-photo" alt="Fred's Avatar"/>
-																<span class="msg-body">
-																	<span class="msg-title">
-																		<span class="blue">Fred:</span>
-																		Vestibulum id penatibus et auctor  ...
-																	</span>
-
-																	<span class="msg-time">
-																		<i class="ace-icon fa fa-clock-o"></i>
-																		<span>10:09 am</span>
-																	</span>
-																</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-
-                                        <li class="dropdown-footer">
-                                            <a href="inbox.html">
-                                                See all messages
-                                                <i class="ace-icon fa fa-arrow-right"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div><!-- /.tab-pane -->
-                            </div><!-- /.tab-content -->
-                        </div><!-- /.tabbable -->
-                    </div><!-- /.dropdown-menu -->
-                </li>
-
-                <li class="light-blue dropdown-modal user-min">
-                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                        <img class="nav-user-photo" src="/images/Ace_template_images/avatars/user.jpg"
-                             alt="Jason's Photo"/>
-								<span class="user-info">
-									<small>Welcome,</small>
-									Jason
-								</span>
-
-                        <i class="ace-icon fa fa-caret-down"></i>
-                    </a>
-
-                    <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-                        <li>
-                            <a href="#">
-                                <i class="ace-icon fa fa-cog"></i>
-                                Settings
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="profile.html">
-                                <i class="ace-icon fa fa-user"></i>
-                                Profile
-                            </a>
-                        </li>
-
-                        <li class="divider"></li>
-
-                        <li>
-                            <a href="#">
-                                <i class="ace-icon fa fa-power-off"></i>
-                                Logout
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div><!-- /.navbar-container -->
-</div>
+<% include ../includes/admin-topNav.html %>
 
 <div class="main-container ace-save-state" id="main-container">
     <script type="text/javascript">
@@ -400,7 +128,7 @@
             <li class="hover">
                 <a href="/admin/log/login/">
                     <i class="menu-icon fa fa-file-text-o"></i>
-                    <span class="menu-text"> 操作日志 </span>
+                    <span class="menu-text"> 日志管理 </span>
                 </a>
                 <b class="arrow"></b>
             </li>
@@ -493,6 +221,23 @@
     </a>
 </div><!-- /.main-container -->
 
+<!-- 删除确认对话框 -->
+<div class="modal fade" id="formInfoBox" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">删除用户</h4>
+            </div>
+            <div class="modal-body">是否要删除该用户？</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-danger" id="btnDel">确认删除</button>
+            </div>
+        </div>
+    </div>
+</div><!-- /删除确认对话框 -->
+
 <!-- basic scripts -->
 
 <!--[if !IE]> -->
@@ -511,6 +256,8 @@
 <!-- page specific plugin scripts -->
 <script src="/javascripts/Ace_template_js/jquery.jqGrid.min.js"></script>
 <script src="/javascripts/Ace_template_js/grid.locale-cn.js"></script>
+<script src="/bower_components/Messenger/js/messenger.min.js"></script>
+<script src="/bower_components/Messenger/js/messenger-theme-future.js"></script>
 
 <!-- ace scripts -->
 <script src="/javascripts/Ace_template_js/ace-elements.min.js"></script>
@@ -591,8 +338,8 @@
                 temp = '<span class="label label-sm label-danger">' + cellvalue + '</span>';
             } else if (cellvalue == "系统管理员") {
                 temp = '<span class="label label-sm label-warning">' + cellvalue + '</span>';
-            }   else if(cellvalue == "普通用户"){
-                temp = '<span class="label label-sm label-success">' + cellvalue + '</span>';
+            } else {
+                temp = '<span class="label label-sm label-info">' + cellvalue + '</span>';
             }
 
             return temp
@@ -962,6 +709,76 @@
             else
                 alert("Please Select Row");
         });
+
+        //延时执行， 等待Dom先生成
+        setTimeout(function () {
+            $(".J_del").on("click",J_del);
+        }, 20);
+
+        function J_del(event) {
+            var WhetherToDelete = false;
+            var url = $(this).attr("href");
+
+            $('#formInfoBox').modal();
+
+            $("#btnDel").on("click", function() {
+                //点击确认按钮开始删除用户
+                WhetherToDelete = true;
+                $('#formInfoBox').modal('hide')
+            });
+            $('#formInfoBox').on('hidden.bs.modal', function (e) {
+                //确认删除
+                if(WhetherToDelete) {
+                    $.ajax({
+                        //提交数据的类型 POST GET
+                        type: "POST",
+                        //提交的网址
+                        url: url,
+                        //提交的数据
+                        data: {oper: "del"},
+                        //返回数据的格式
+                        datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
+                        //在请求之前调用的函数
+                        beforeSend: function () {
+                            msg = Messenger().post({
+                                message: '处理中..',
+                                hideAfter: 5,
+                                id: "Only-one-message"
+                            });
+                        },
+                        //成功返回之后调用的函数
+                        success: function (data) {
+                            msg.update({
+                                message: '删除成功！',
+                                type: 'success',
+                                hideAfter: 5,
+                                id: "Only-one-message"
+                            });
+                        },
+                        complete: function(e) {
+                            //先清除， 再重新加载数据！
+                            $("#grid-table").jqGrid("clearGridData");
+                            fetchGridData();
+                            setTimeout(function(){
+                                $(".J_del").on("click",J_del);
+                            },20)
+                        },
+                        //调用出错执行的函数
+                        error: function (e) {
+                            msg.update({
+                                message: '删除失败！',
+                                type: 'error',
+                                hideAfter: 5,
+                                id: "Only-one-message"
+                            })
+                        }
+                    });
+                    WhetherToDelete = false;
+                }
+
+            });
+            return false;//阻止链接跳转
+        }
     });
 </script>
 </body>

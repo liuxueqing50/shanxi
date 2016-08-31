@@ -66,7 +66,7 @@
 
                                     <div class="space-6"></div>
 
-                                    <form action="/login" method="post" id="signinForm">
+                                    <form id="signinForm">
                                         <fieldset>
                                             <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
@@ -86,9 +86,11 @@
 
                                             <label class="block clearfix">
 														<span class="col-xs-7 captcha-ipt input-icon input-icon-right">
-															<input id="captcha" type="text" name="captcha" class="form-control"  placeholder="验证码"/>
+															<input id="captcha" type="text" name="captcha"
+                                                                   class="form-control" placeholder="验证码"/>
 														</span>
-                                                        <iframe id="loginIframe" class="col-xs-5 captcha-svg" src="/captcha"></iframe>
+                                                <iframe id="loginIframe" class="col-xs-5 captcha-svg"
+                                                        src="/captcha"></iframe>
                                             </label>
 
                                             <div class="space"></div>
@@ -135,14 +137,7 @@
                                     <div>
                                         <a href="#" data-target="#forgot-box" class="forgot-password-link">
                                             <i class="ace-icon fa fa-arrow-left"></i>
-                                            忘记密码
-                                        </a>
-                                    </div>
-
-                                    <div>
-                                        <a href="#" data-target="#signup-box" class="user-signup-link">
-                                            注册帐号
-                                            <i class="ace-icon fa fa-arrow-right"></i>
+                                            查看版本更新信息
                                         </a>
                                     </div>
                                 </div>
@@ -152,34 +147,19 @@
                         <div id="forgot-box" class="forgot-box widget-box no-border">
                             <div class="widget-body">
                                 <div class="widget-main">
-                                    <h4 class="header red lighter bigger">
-                                        <i class="ace-icon fa fa-key"></i>
-                                        重置密码
+                                    <h4 class="header red2 lighter bigger">
+                                        <i class="ace-icon fa fa-info-circle"></i>
+                                        版本更新信息
                                     </h4>
 
                                     <div class="space-6"></div>
                                     <p>
-                                        请输入您的Email邮箱地址以便重置密码
+                                        1、将平台整体从sqlServer迁移到MongoDb;
+                                    </p>
+                                    <p>
+                                        2、增加后台管理系统：包含管理首页、用户管理、角色管理、操作日志4个功能模块
                                     </p>
 
-                                    <form>
-                                        <fieldset>
-                                            <label class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input type="email" class="form-control"
-                                                                   placeholder="Email"/>
-															<i class="ace-icon fa fa-envelope"></i>
-														</span>
-                                            </label>
-
-                                            <div class="clearfix">
-                                                <button type="button" class="width-35 pull-right btn btn-sm btn-danger">
-                                                    <i class="ace-icon fa fa-lightbulb-o"></i>
-                                                    <span class="bigger-110">发送</span>
-                                                </button>
-                                            </div>
-                                        </fieldset>
-                                    </form>
                                 </div><!-- /.widget-main -->
 
                                 <div class="toolbar center">
@@ -190,92 +170,6 @@
                                 </div>
                             </div><!-- /.widget-body -->
                         </div><!-- /.forgot-box -->
-
-                        <div id="signup-box" class="signup-box widget-box no-border">
-                            <div class="widget-body">
-                                <div class="widget-main">
-                                    <h4 class="header green lighter bigger">
-                                        <i class="ace-icon fa fa-users blue"></i>
-                                        新用户注册
-                                    </h4>
-
-                                    <div class="space-6"></div>
-                                    <p> 请输入注册信息: </p>
-
-                                    <form action="/signup" method="post" id="signupForm">
-                                        <fieldset>
-                                            <label for="cemail" class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input type="email" id="cemail" name="email"
-                                                                   class="form-control"
-                                                                   placeholder="输入Email地址"/>
-															<i class="ace-icon fa fa-envelope"></i>
-														</span>
-                                            </label>
-
-                                            <label for="cname" class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input id="cname" type="text" name="name"
-                                                                   class="form-control"
-                                                                   placeholder="输入用户名" required/>
-															<i class="ace-icon fa fa-user"></i>
-														</span>
-                                            </label>
-
-                                            <label for="password" class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input id="password" type="password" name="password"
-                                                                   class="form-control"
-                                                                   placeholder="输入密码"/>
-															<i class="ace-icon fa fa-lock"></i>
-														</span>
-                                            </label>
-
-                                            <label for="confirm_password" class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input id="confirm_password" type="password" name="pass"
-                                                                   class="form-control"
-                                                                   placeholder="确认密码"/>
-															<i class="ace-icon fa fa-retweet"></i>
-														</span>
-                                            </label>
-
-                                            <label class="block">
-                                                <input name="agreement" type="checkbox" class="ace"/>
-														<span class="lbl">
-															我同意
-															<a href="#">用户协议</a>
-														</span>
-                                            </label>
-
-                                            <div class="space-24"></div>
-
-                                            <div class="clearfix">
-                                                <button id="signupReset" type="reset"
-                                                        class="width-30 pull-left btn btn-sm">
-                                                    <i class="ace-icon fa fa-refresh"></i>
-                                                    <span class="bigger-110">重置</span>
-                                                </button>
-
-                                                <button type="submit"
-                                                        class="width-65 pull-right btn btn-sm btn-success">
-                                                    <span class="bigger-110">注册</span>
-
-                                                    <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
-                                                </button>
-                                            </div>
-                                        </fieldset>
-                                    </form>
-                                </div>
-
-                                <div class="toolbar center">
-                                    <a href="" data-target="#login-box" class="back-to-login-link">
-                                        <i class="ace-icon fa fa-arrow-left"></i>
-                                        返回登陆页面
-                                    </a>
-                                </div>
-                            </div><!-- /.widget-body -->
-                        </div><!-- /.signup-box -->
                     </div><!-- /.position-relative -->
 
                     <div class="navbar-fixed-top align-right">
@@ -303,7 +197,8 @@
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">提示信息</h4>
             </div>
             <div class="modal-body"></div>
@@ -332,7 +227,7 @@
 <script src="/bower_components/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="/javascripts/Ace_template_js/bootstrap.min.js"></script>
 <script src="/bower_components/jquery-validation/dist/localization/messages_zh.js"></script>
-<script src="/javascripts/customs/pages/form.js"></script>
+<script src="/javascripts/customs/pages/application/login.js"></script>
 
 <!-- inline scripts related to this page -->
 <script type="text/javascript">

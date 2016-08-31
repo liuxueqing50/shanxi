@@ -2,64 +2,46 @@
  * Created by Liuwei on 2016/8/18.
  */
 /**
- * form js for addUser
+ * form js for editRole
  */
 
 $(document).ready(function () {
-    var signupValidator = $("#signupForm").validate({
+    var signupValidator = $("#addRoleForm").validate({
         errorPlacement: function (error, element) {
             // Append error within linked label
-            console.log( $(element))
+            console.log( $(element));
             $(element)
                 .after(error)
         },
         errorElement: "span",
         rules: {
-            email: {
+            name: {
                 required: true,
-                email: true,
-                remote: {  //验证Email是否存在
+                minlength: 4,
+                remote: {  //验证Role name是否存在
                     type: "POST",
-                    url: "/admin/user/checkConfirm",             //servlet
+                    url: "/admin/role/checkEditConfirm",             //servlet
                     dataType: "json",           //接受数据格式
                     data: {
                         captcha: function () {
-                            return $("#cemail").val();
+                            return $("#cname").val();
                         }
                     }
                 }
             },
-            name: {
+            description: {
                 required: true,
                 minlength: 4
-            },
-            password: {
-                required: true,
-                minlength: 6
-            },
-            pass: {
-                required: true,
-                minlength: 6,
-                equalTo: "#password"
             }
         },
         messages: {
-            email: {
-                required: "Email地址不能为空",
-                remote: "Email地址已经存在，请重新输入"
-            },
             name: {
-                required: "用户名不能为空",
-                minlength: "用户名不能小于6个字符"
+                required: "请输入角色名称",
+                remote: "该角色名称已经存在，请重新输入"
             },
-            password: {
-                required: "请输入密码",
-                minlength: "确认密码不能小于6个字符"
-            },
-            pass: {
-                required: "请输入确认密码",
-                minlength: "确认密码不能小于6个字符",
-                equalTo: "两次输入密码不一致不一致"
+            description: {
+                required: "请输入角色描述说明",
+                minlength: "输入长度不够，请输入至少4个字符"
             }
         },
         invalidHandler: function () {
@@ -69,22 +51,22 @@ $(document).ready(function () {
             //表单的处理
             $.ajax({
                 type: "POST",
-                url: "/admin/user/addUser",             //servlet
+                url: "/admin/role/editRole",             //servlet
                 dataType: "json",           //接受数据格式
-                data: $("#signupForm").serialize(),
+                data: $("#addRoleForm").serialize(),
                 error: function (err) {
                     alert(err)
                 },
                 success: function (result) {
                     if(result == "true") {
-                        $('#formInfoBox').find(".modal-body").html("用户新建成功！");
+                        $('#formInfoBox').find(".modal-body").html("修改成功！");
                         $('#formInfoBox').modal();
                         $('#formInfoBox').on('hidden.bs.modal', function (e) {
-                            window.location.href="/admin/user"
+                            window.location.href="/admin/role"
                         })
                     }
                     if(result == "false") {
-                        $('#formInfoBox').find(".modal-body").html("用户新建失败！");
+                        $('#formInfoBox').find(".modal-body").html("修改失败！");
                         $('#formInfoBox').modal();
                         $('#formInfoBox').on('hidden.bs.modal', function (e) {
                             signupValidator.resetForm();
@@ -97,6 +79,6 @@ $(document).ready(function () {
     });
 
     $("#signupReset").click(function () {
-        signupValidator.resetForm();
+        window.location.href="/admin/role"
     });
 });

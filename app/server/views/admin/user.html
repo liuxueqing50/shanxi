@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta charset="utf-8"/>
-    <title>Two Menu Style - Ace Admin</title>
+    <title><%= title %></title>
 
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="/stylesheets/Ace_template_css/jquery-ui.min.css"/>
     <link rel="stylesheet" href="/stylesheets/Ace_template_css/bootstrap-datepicker3.min.css"/>
     <link rel="stylesheet" href="/stylesheets/Ace_template_css/ui.jqgrid.min.css"/>
+    <link rel="stylesheet" href="/bower_components/Messenger/css/messenger.css"/>
+    <link rel="stylesheet" href="/bower_components/Messenger/css/messenger-theme-future.css"/>
 
     <!-- text fonts -->
     <link rel="stylesheet" href="/stylesheets/Ace_template_css/fonts.googleapis.com.css"/>
@@ -126,7 +128,7 @@
             <li class="hover">
                 <a href="/admin/log/login/">
                     <i class="menu-icon fa fa-file-text-o"></i>
-                    <span class="menu-text"> 操作日志 </span>
+                    <span class="menu-text"> 日志管理 </span>
                 </a>
                 <b class="arrow"></b>
             </li>
@@ -220,6 +222,23 @@
     </a>
 </div><!-- /.main-container -->
 
+<!-- 删除确认对话框 -->
+<div class="modal fade" id="formInfoBox" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">删除用户</h4>
+            </div>
+            <div class="modal-body">是否要删除该用户？</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-danger" id="btnDel">确认删除</button>
+            </div>
+        </div>
+    </div>
+</div><!-- /删除确认对话框 -->
+
 <!-- basic scripts -->
 
 <!--[if !IE]> -->
@@ -238,6 +257,8 @@
 <!-- page specific plugin scripts -->
 <script src="/javascripts/Ace_template_js/jquery.jqGrid.min.js"></script>
 <script src="/javascripts/Ace_template_js/grid.locale-cn.js"></script>
+<script src="/bower_components/Messenger/js/messenger.min.js"></script>
+<script src="/bower_components/Messenger/js/messenger-theme-future.js"></script>
 
 
 <!-- ace scripts -->
@@ -318,38 +339,60 @@
 
             var temp = "";
 
-            if(cellvalue == "超级管理员") {
-                temp = '<span class="label label-sm label-danger">'+ cellvalue + '</span>';
-            } else if(cellvalue == "系统管理员") {
-                temp = '<span class="label label-sm label-warning">'+ cellvalue + '</span>';
-            } else if(cellvalue == "普通用户"){
-                temp = '<span class="label label-sm label-success">'+ cellvalue + '</span>';
+            if (cellvalue == "超级管理员") {
+                temp = '<span class="label label-sm label-danger">' + cellvalue + '</span>';
+            } else if (cellvalue == "系统管理员") {
+                temp = '<span class="label label-sm label-warning">' + cellvalue + '</span>';
+            } else {
+                temp = '<span class="label label-sm label-success">' + cellvalue + '</span>';
             }
 
             return temp
         }
 
+        function addButton(cellvalue, options, rowObject) {
+
+            var temp = '<a href="/admin/user/' + cellvalue + '/edit" class="btn btn-default btn-minier">编辑</a>&nbsp;<a href="/admin/user/' + cellvalue + '/del" class="btn btn-danger btn-minier J_del">删除</a>&nbsp;<a href="/admin/user/' + cellvalue + '/modify" class="btn btn-info btn-minier">修改密码</a>';
+
+
+            return temp
+        }
 
         jQuery(grid_selector).jqGrid({
             datatype: "local",
             height: 500,
-            colNames: ['操作 ', '_id', '用户帐号', '用户昵称', '角色', '创建人', '创建日期'],
+            colNames: ['_id', '用户帐号', '用户昵称', '角色', '创建人', '创建日期', '操作'],
             colModel: [
                 {
-                    name: 'myac', index: '', width: 80, fixed: true, sortable: false, resize: false,
-                    formatter: 'actions',
-                    formatoptions: {
-                        keys: true,
-                        //delbutton: false,//disable delete button
-
-                        delOptions: {recreateForm: true, beforeShowForm: beforeDeleteCallback}
-                        //editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
-                    }
+                    name: '_id',
+                    index: '_id',
+                    width: 80,
+                    sorttype: "text",
+                    hidden: true,
+                    editable: true,
+                    editrules: {edithidden: true},
+                    key: true
                 },
-                {name: '_id', index: '_id', width: 80, sorttype: "text", hidden: true, editable: true, editrules: {edithidden:true}, key:true},
-                {name: 'user', index: '用户帐号', width: 80, editable: true, sorttype: "text", editrules: {edithidden:true,required:true,email:true}, editoptions:{minlength:8,maxlength:16}},
+                {
+                    name: 'user',
+                    index: '用户帐号',
+                    width: 80,
+                    editable: true,
+                    sorttype: "text",
+                    editrules: {edithidden: true, required: true, email: true},
+                    editoptions: {minlength: 8, maxlength: 16}
+                },
                 {name: 'name', index: '用户昵称', width: 60, editable: true, sorttype: "text"},
-                {name: 'role', index: '角色', width: 60, editable: true, sorttype: "text",edittype:'select',editoptions: {value:'超级管理员:超级管理员;系统管理员:系统管理员;普通用户:普通用户'},formatter: highlight},
+                {
+                    name: 'role',
+                    index: '角色',
+                    width: 60,
+                    editable: true,
+                    sorttype: "text",
+                    edittype: 'select',
+                    editoptions: {value: '超级管理员:超级管理员;系统管理员:系统管理员;普通用户:普通用户'},
+                    formatter: highlight
+                },
                 {name: 'creator', index: '创建人', width: 100, editable: false, sorttype: "text"},
                 {
                     name: 'date',
@@ -358,6 +401,13 @@
                     datefmt: "MMMM Do YYYY, h:mm:ss a",
                     editable: false,
                     sorttype: "date"
+                },
+                {
+                    name: '_id',
+                    index: '操作',
+                    width: 80,
+                    editable: false,
+                    formatter: addButton
                 }
             ],
 
@@ -386,7 +436,7 @@
             editurl: "/admin/user/updateAccount",
             caption: "",
             reloadAfterSubmit: true,
-            checkOnSubmit:true
+            checkOnSubmit: true
 
             //,autowidth: true,
 
@@ -672,7 +722,82 @@
             else
                 alert("Please Select Row");
         });
+
+        var msg = null;//删除列表项目右下角提示信息
+
+        //延时执行， 等待Dom先生成
+        setTimeout(function () {
+            $(".J_del").on("click",J_del);
+        }, 20);
+
+        function J_del(event) {
+            var WhetherToDelete = false;
+            var url = $(this).attr("href");
+
+            $('#formInfoBox').modal();
+
+            $("#btnDel").on("click", function() {
+                //点击确认按钮开始删除用户
+                WhetherToDelete = true;
+                $('#formInfoBox').modal('hide')
+            });
+
+            $('#formInfoBox').on('hidden.bs.modal', function (e) {
+                //确认删除
+                if(WhetherToDelete) {
+                    $.ajax({
+                        //提交数据的类型 POST GET
+                        type: "POST",
+                        //提交的网址
+                        url: url,
+                        //提交的数据
+                        data: {oper: "del"},
+                        //返回数据的格式
+                        datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
+                        //在请求之前调用的函数
+                        beforeSend: function () {
+                            msg = Messenger().post({
+                                message: '处理中..',
+                                hideAfter: 5,
+                                id: "Only-one-message"
+                            });
+                        },
+                        //成功返回之后调用的函数
+                        success: function (data) {
+                            msg.update({
+                                message: '删除成功！',
+                                type: 'success',
+                                hideAfter: 5,
+                                id: "Only-one-message"
+                            });
+                        },
+                        complete: function(e) {
+                            //先清除， 再重新加载数据！
+                            $("#grid-table").jqGrid("clearGridData");
+                            fetchGridData();
+                           setTimeout(function(){
+                               $(".J_del").on("click",J_del);
+                           },20)
+                        },
+                        //调用出错执行的函数
+                        error: function (e) {
+                            msg.update({
+                                message: '删除失败！',
+                                type: 'error',
+                                hideAfter: 5,
+                                id: "Only-one-message"
+                            })
+                        }
+                    });
+                    WhetherToDelete = false;
+                }
+
+            });
+
+            return false;//阻止链接跳转
+        }
     });
+
 </script>
 
 </body>

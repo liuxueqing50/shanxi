@@ -13,6 +13,12 @@
     <link rel="stylesheet" href="/stylesheets/Ace_template_css/font-awesome.min.css"/>
 
     <!-- page specific plugin styles -->
+    <link rel="stylesheet" href="/stylesheets/Ace_template_css/jquery-ui.min.css"/>
+    <link rel="stylesheet" href="/stylesheets/Ace_template_css/bootstrap-datepicker3.min.css"/>
+    <link rel="stylesheet" href="/stylesheets/Ace_template_css/ui.jqgrid.min.css"/>
+    <link rel="stylesheet" href="/stylesheets/Ace_template_css/bootstrap-duallistbox.min.css"/>
+    <link rel="stylesheet" href="/stylesheets/Ace_template_css/bootstrap-multiselect.min.css"/>
+    <link rel="stylesheet" href="/stylesheets/Ace_template_css/select2.min.css"/>
 
     <!-- text fonts -->
     <link rel="stylesheet" href="/stylesheets/Ace_template_css/fonts.googleapis.com.css"/>
@@ -110,7 +116,7 @@
                 <b class="arrow"></b>
             </li>
 
-            <li class="hover">
+            <li class="active open hover">
                 <a href="/admin/role">
                     <i class="menu-icon fa fa-tag"></i>
 
@@ -120,10 +126,10 @@
                 <b class="arrow"></b>
             </li>
 
-            <li class="active open hover">
+            <li class="hover">
                 <a href="/admin/log/login/">
                     <i class="menu-icon fa fa-file-text-o"></i>
-                    <span class="menu-text"> 操作日志 </span>
+                    <span class="menu-text"> 日志管理 </span>
                 </a>
                 <b class="arrow"></b>
             </li>
@@ -137,19 +143,13 @@
                 <% include ../includes/ace-settings-container.html %>
 
                 <div class="page-header">
-                    <h1>站点配置 </h1>
+                    <h1>添加角色 </h1>
                 </div><!-- /.page-header -->
 
                 <div class="row">
                     <div class="col-xs-12">
                         <!-- PAGE CONTENT BEGINS -->
                         <div class="invisible">
-                            <button data-target="#sidebar2" type="button" class="pull-left menu-toggler navbar-toggle">
-                                <span class="sr-only">Toggle sidebar</span>
-
-                                <i class="ace-icon fa fa-dashboard white bigger-125"></i>
-                            </button>
-
                             <div id="sidebar2" class="sidebar responsive menu-min ace-save-state">
                                 <ul class="nav nav-list">
 
@@ -157,7 +157,7 @@
                                         <a href="#" class="dropdown-toggle">
                                             <i class="menu-icon fa fa-users"></i>
                                                 <span class="menu-text">
-                                                    日志管理
+                                                    用户管理
                                                 </span>
 
                                             <b class="arrow fa fa-angle-down"></b>
@@ -167,17 +167,17 @@
 
                                         <ul class="submenu nav-show" style="display: block;">
                                             <li class="">
-                                                <a href="/admin/log/login">
+                                                <a href="/admin/role">
                                                     <i class="menu-icon fa fa-caret-right"></i>
-                                                    登陆日志列表
+                                                    角色列表
                                                 </a>
 
                                                 <b class="arrow"></b>
                                             </li>
                                             <li class="">
-                                                <a href="/admin/log/operation">
+                                                <a href="/admin/role/addRole">
                                                     <i class="menu-icon fa fa-caret-right"></i>
-                                                    操作日志列表
+                                                    添加角色
                                                 </a>
 
                                                 <b class="arrow"></b>
@@ -195,25 +195,104 @@
                                 </div>
                             </div><!-- .sidebar -->
                         </div>
-
-                        <div class="hidden-sm hidden-xs">
-                            <button type="button" class="sidebar-collapse btn btn-white btn-primary"
-                                    data-target="#sidebar">
-                                <i id="sidebar4-toggle-icon" class="ace-icon fa fa-angle-double-up ace-save-state"
-                                   data-icon1="ace-icon fa fa-angle-double-up"
-                                   data-icon2="ace-icon fa fa-angle-double-down"></i>
-                                折叠/展开菜单栏
-                            </button>
-                        </div>
-
                         <!-- PAGE CONTENT ENDS -->
                     </div><!-- /.col -->
                 </div><!-- /.row -->
+
+                <div class="row">
+                    <div class="col-xs-12">
+
+                        <form class="form-horizontal" role="form" id="addRoleForm">
+
+                            <h3 class="lighter block orange">基本信息</h3>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right" for="cname">
+                                    角色名称 </label>
+
+                                <div class="col-sm-9">
+                                    <input type="text" id="cname" name="name"
+                                           placeholder="请输入角色名称"
+                                           class="col-xs-12 col-sm-5" value="<%= selectRoleInfo.name %>">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right"
+                                       for="ipt_description">
+                                    角色描述 </label>
+
+                                <div class="col-sm-9">
+                                    <textarea id="ipt_description" rows="2" class="col-xs-12 col-sm-5"
+                                              name="description" maxlength="100"
+                                              placeholder="描述..."><%= selectRoleInfo.description %></textarea>
+                                </div>
+                            </div>
+
+                            <div class="hr hr-18 dotted hr-double"></div>
+
+                            <h3 class="lighter block orange">选择权限</h3>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-top" for="duallist"> 角色权限 </label>
+
+                                <div class="col-sm-8">
+                                    <select multiple="multiple" size="10" name="duallistbox_permissions" id="duallist">
+                                        <% AllAccessAndResource.forEach(function(a){ %>
+                                        <option value="<%= a._id %>">[<%=a.belongTo%>] <%= a.name %></option>
+                                        <% }) %>
+
+                                        <% selectRoleInfo.permissions.forEach(function(a){ %>
+                                        <option value="<%= a._id %>" selected="selected">[<%=a.belongTo%>] <%= a.name
+                                            %>
+                                        </option>
+                                        <% }) %>
+                                    </select>
+
+                                    <div class="hr hr-16 hr-dotted"></div>
+                                </div>
+                            </div>
+
+                            <div class="clearfix form-actions">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <button class="btn btn-sm btn-success" type="submit">
+                                        <i class="ace-icon fa fa-check bigger-110"></i>
+                                        保存
+                                    </button>
+
+                                    &nbsp; &nbsp; &nbsp;
+                                    <button class="btn btn-sm" type="reset" id="signupReset">
+                                        <i class="ace-icon fa fa-undo bigger-110"></i>
+                                        取消
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
             </div><!-- /.page-content -->
         </div>
     </div><!-- /.main-content -->
 
     <% include ../includes/footer.html %>
+
+    <!-- 注册提示信息模态框 -->
+    <div class="modal fade" id="formInfoBox" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">提示信息</h4>
+                </div>
+                <div class="modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
         <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
@@ -236,6 +315,13 @@
 <script src="/javascripts/Ace_template_js/bootstrap.min.js"></script>
 
 <!-- page specific plugin scripts -->
+<script src="/bower_components/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="/bower_components/jquery-validation/dist/localization/messages_zh.js"></script>
+<script src="/javascripts/Ace_template_js/jquery.bootstrap-duallistbox.min.js"></script>
+<script src="/javascripts/Ace_template_js/jquery.raty.min.js"></script>
+<script src="/javascripts/Ace_template_js/bootstrap-multiselect.min.js"></script>
+<script src="/javascripts/Ace_template_js/select2.min.js"></script>
+<script src="/javascripts/Ace_template_js/jquery-typeahead.js"></script>
 
 <!-- ace scripts -->
 <script src="/javascripts/Ace_template_js/ace-elements.min.js"></script>
@@ -263,6 +349,28 @@
         $('#sidebar2[data-sidebar-hover=true]').ace_sidebar_hover('reset');
         $('#sidebar2[data-sidebar-scroll=true]').ace_sidebar_scroll('reset', true);
     })
+
 </script>
+
+<script>
+    jQuery(function ($) {
+        var demo1 = $('select[name="duallistbox_permissions"]').bootstrapDualListbox(
+                {
+                    filterPlaceHolder: '搜索..',
+                    filterTextClear: '显示全部',
+                    infoText: '共 {0}',
+                    infoTextFiltered: '<span class="label label-purple label-lg">搜索条件启用</span>',
+                    nonSelectedListLabel: '系统中所有权限：',
+                    selectedListLabel: '账号已设置权限：',
+                    infoTextEmpty: '列表已空...',
+                    moveAllLabel: "全部添加",
+                    removeAllLabel: "全部移除"
+                }
+        );
+        var container1 = demo1.bootstrapDualListbox('getContainer');
+        container1.find('.btn').addClass('btn-white btn-info btn-bold');
+    });
+</script>
+<script src="/javascripts/customs/pages/admin/editRole.js"></script>
 </body>
 </html>

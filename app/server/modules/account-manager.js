@@ -1,9 +1,9 @@
 var crypto = require('crypto');
 var MongoDB = require('mongodb').Db;
+var ObjectId = require('mongodb').ObjectID;
 var Server = require('mongodb').Server;
 var moment = require('moment');
-moment.locale('zh-cn' +
-    '');
+moment.locale('zh-cn');
 var config = require("../../../config/config");
 
 /*
@@ -51,13 +51,13 @@ exports.autoLogin = function (email, pass, callback) {
 exports.manualLogin = function (email, pass, callback) {
     accounts.findOne({email: email}, function (e, o) {
         if (o == null) {
-            callback('user-not-found');
+            callback('帐号不存在！');
         } else {
             validatePassword(pass, o.pass, function (err, res) {
                 if (res) {
                     callback(null, o);
                 } else {
-                    callback('invalid-password');
+                    callback('用户名或密码错误！');
                 }
             });
         }
@@ -88,12 +88,13 @@ exports.addNewAccount = function (newData, callback) {
 }
 
 exports.updateAccount = function (newData, callback) {
-    accounts.findOne({_id: getObjectId(newData._id)}, function (e, o) {
-
+    accounts.findOne({_id: ObjectId(newData._id)}, function (e, o) {
+        console.log(newData)
         o.name = newData.name;
         o.user = newData.user;
-        o.email = newData.user;
+        o.email = newData.email;
         o.role = newData.role;
+        o.pid = newData.pid;
         //o.creator 	= newData.creator;
 
         if (!newData.pass) {
@@ -111,6 +112,14 @@ exports.updateAccount = function (newData, callback) {
             });
         }
     });
+}
+
+exports.getUserInfoById = function (_id, callback) {
+    accounts.findOne({"_id": ObjectId(_id)}, function (e, o) {
+        if (e) {
+            callback(e, null);
+        } else callback(null, o)
+    })
 }
 
 exports.updatePassword = function (email, newPass, callback) {
@@ -136,6 +145,17 @@ exports.getAccountByEmail = function (email, callback) {
     accounts.findOne({email: email}, function (e, o) {
         callback(o);
     });
+}
+
+exports.getAccountByEmailAndInitialAccount = function (email, initialAccount, callback) {
+    //比对数据库中、除原账号以外是否存在其他相同账号！
+    if (email == initialAccount) {
+        callback(null);
+    } else {
+        accounts.findOne({email: email}, function (e, o) {
+            callback(o);
+        });
+    }
 }
 
 exports.validateResetLink = function (email, passHash, callback) {

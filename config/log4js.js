@@ -11,9 +11,16 @@ log4js.configure({
             "pattern": "-yyyy-MM-dd",
             "category": "http"
         },
+        {   //用户登录日志
+            type: 'file',
+            filename: 'logs/users/login.log',
+            maxLogSize: 1024 * 500,
+            backups: 4,
+            category: 'usersLoginLog'
+        },
         {   //用户操作日志
             type: 'file',
-            filename: 'logs/users/users.log',
+            filename: 'logs/users/operation.log',
             maxLogSize: 1024 * 500,
             backups: 4,
             category: 'usersOperationLog'
@@ -33,8 +40,10 @@ log4js.configure({
 var console = log4js.getLogger('console');
 var http = log4js.getLogger('http');
 var errors = log4js.getLogger('errors');
+var usersLoginLog = log4js.getLogger('usersLoginLog');
 var usersOperationLog = log4js.getLogger('usersOperationLog');
 
+exports.usersLoginLog = usersLoginLog;
 exports.usersOperationLog = usersOperationLog;
 
 exports.use = function (app) {

@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta charset="utf-8"/>
-    <title>Two Menu Style - Ace Admin</title>
+    <title><%= title %></title>
 
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
@@ -126,7 +126,7 @@
             <li class="hover">
                 <a href="/admin/log/login/">
                     <i class="menu-icon fa fa-file-text-o"></i>
-                    <span class="menu-text"> 操作日志 </span>
+                    <span class="menu-text"> 日志管理 </span>
                 </a>
                 <b class="arrow"></b>
             </li>
@@ -193,15 +193,6 @@
                             </div><!-- .sidebar -->
                         </div>
 
-                        <div class="hidden-sm hidden-xs">
-                            <button type="button" class="sidebar-collapse btn btn-white btn-primary"
-                                    data-target="#sidebar">
-                                <i id="sidebar4-toggle-icon" class="ace-save-state ace-icon fa fa-angle-double-up"
-                                   data-icon1="ace-icon fa fa-angle-double-up"
-                                   data-icon2="ace-icon fa fa-angle-double-down"></i>
-                                折叠/展开菜单栏
-                            </button>
-                        </div>
                         <!-- PAGE CONTENT ENDS -->
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -269,9 +260,9 @@
 
                                             <div class="col-sm-9">
                                                 <select class="col-xs-12 col-sm-5" name="role" id="slt_role">
-                                                    <option value="">请选择用户角色...</option>
-                                                    <option value="普通用户">普通用户</option>
-                                                    <option value="系统管理员">系统管理员</option>
+                                                    <% roleList.forEach(function(a){ %>
+                                                    <option value="<%= a._id %>"><%= a.name %></option>
+                                                    <% }) %>
                                                 </select>
                                             </div>
                                         </div>
