@@ -1,11 +1,10 @@
 var AM = require('./modules/account-manager');
 var PSI = require('./modules/project-site-info');
 var RP = require('./modules/role-pemission');
+var LM = require('./modules/log-manager');
 
 var _ = require("underscore")._;
 var svgCaptcha = require('svg-captcha');
-var loginLog = require('../../config/bunyan').loginLog;
-var operationLog = require('../../config/bunyan').operationLog;
 var fs = require('fs');
 var parser = require('ua-parser-js');
 var path = require('path');
@@ -39,43 +38,6 @@ var topNavData = [
     }
 ];
 
-//监控日志文件改变，重新加载;
-var logLogin = null;
-var logOperation = null;
-var fileName1 = path.resolve(__dirname, '../../logs/login.log');
-var fileName2 = path.resolve(__dirname, '../../logs/operation.log');
-readLogLogin();
-readLogLogin();
-fs.watch(fileName1,( function () {
-    // 读取登录日志数据
-    readLogLogin();
-})());
-
-fs.watch(fileName2,( function () {
-    // 读取操作日志数据
-    readLogOperation()
-})());
-
-function readLogLogin() {
-    fs.readFile(fileName1,{flag:'r'}, function (err, data) {
-        if (err) throw err;
-        var logLoginData = data.toString().split('\n');
-        logLoginData.pop();
-        logLogin = logLoginData;
-    });
-}
-function readLogOperation() {
-    // 读取操作日志数据
-    fs.readFile(fileName2,{flag:'r'}, function (err, data) {
-        if (err) throw err;
-        var logOperationData = data.toString().split('\n');
-        logOperationData.pop();
-        logOperation = logOperationData;
-    });
-}
-
-console.log("watching log file...");
-
 /* ********************************************** 权限设置 **************************************************** */
 
 //登陆鉴权
@@ -91,7 +53,6 @@ var auth = function (req, res, next) {
 //页面权限
 var pageAuthority = function (req, res, next) {
     var routePath = req.route.path;
-    console.log(routePath);
     if (req.session.user.Role) {
         try {
             var permissions = req.session.user.Role.permissions;
@@ -161,7 +122,8 @@ module.exports = function (app) {
         var ip = getClientIp(req);
         AM.manualLogin(user, pass, function (e, o) {
             if (!o) {
-                loginLog.info({
+                LM.addLog({
+                    "type": "登录日志",
                     "user": user,
                     "IP": ip,
                     "role": "未登录",
@@ -169,8 +131,7 @@ module.exports = function (app) {
                         "state": "false",
                         "msg": "用户名或密码错误!"
                     },
-                    "ua": ua,
-                    "date": moment().format('YYYY MMMM Do, a h:mm:ss')
+                    "ua": ua
                 });
                 res.status(400).send({"msg": "用户名或密码错误!"});
                 res.end();
@@ -181,7 +142,8 @@ module.exports = function (app) {
                     res.cookie('pass', o.pass, {maxAge: 3600 * 24 * 7});
                     RP.getPemissionByUser(req.session.user, function (result) {
                         req.session.user.Role = result[0];
-                        loginLog.info({
+                        LM.addLog({
+                            "type": "登录日志",
                             "user": user,
                             "IP": ip,
                             "role": req.session.user.Role.name,
@@ -189,15 +151,15 @@ module.exports = function (app) {
                                 "state": "true",
                                 "msg": "登陆成功!"
                             },
-                            "ua": ua,
-                            "date": moment().format('YYYY MMMM Do, a h:mm:ss')
+                            "ua": ua
                         });
                         res.status(200).send({"msg": "登录成功！"});
                     });
                 } else {
                     RP.getPemissionByUser(req.session.user, function (result) {
                         req.session.user.Role = result[0];
-                        loginLog.info({
+                        LM.addLog({
+                            "type": "登录日志",
                             "user": user,
                             "IP": ip,
                             "role": req.session.user.Role.name,
@@ -205,8 +167,7 @@ module.exports = function (app) {
                                 "state": "true",
                                 "msg": "登陆成功!"
                             },
-                            "ua": ua,
-                            "date": moment().format('YYYY MMMM Do, a h:mm:ss')
+                            "ua": ua
                         });
                         res.status(200).send({"msg": "登录成功！"});
                     });
@@ -279,15 +240,16 @@ module.exports = function (app) {
                         res.json("false");
                         res.end();
                     } else {
-                        operationLog.info({
+                        LM.addLog({
+                            "type": "操作日志",
                             "user": req.session.user.user,
                             "IP": ip,
                             "role": req.session.user.role,
                             "result": {
                                 "state": "true",
-                                "msg": "["+ creator +"]新建了帐号[" + user + "], 并设置了角色[" + o.name +"]"
+                                "msg": "[" + creator + "]新建了帐号[" + user + "], 并设置了角色[" + o.name + "]"
                             },
-                            "date": moment().format('YYYY MMMM Do, a h:mm:ss')
+                            "ua": ua
                         });
                         res.json("true");
                         res.end();
@@ -306,20 +268,23 @@ module.exports = function (app) {
         var email = req.body['email'];
         var password = req.body['password'];
         var pass = req.body['pass'];
+        // get user-agent header
+        var ua = parser(req.headers['user-agent']);
         // get use ip address
         var ip = getClientIp(req);
         if (password == pass) {
             AM.updatePassword(email, pass, function () {
-                operationLog.info({
+                LM.addLog({
+                    "type": "操作日志",
                     "user": req.session.user.user,
                     "IP": ip,
                     "role": req.session.user.role,
                     "result": {
                         "state": "true",
-                        "msg": "["+ req.session.user.user +"]修改了[" + email + "]的密码!"
+                        "msg": "[" + req.session.user.user + "]修改了[" + email + "]的密码!"
                     },
-                    "date": moment().format('YYYY MMMM Do, a h:mm:ss')
-                });
+                    "ua": ua
+                })
                 res.json("true");
                 res.end();
             })
@@ -371,21 +336,24 @@ module.exports = function (app) {
     app.post('/admin/user/:_id/del', auth, function (req, res) {
         var oper = req.body['oper'];
         var _id = req.params._id;
+        // get user-agent header
+        var ua = parser(req.headers['user-agent']);
         // get use ip address
         var ip = getClientIp(req);
         if (oper == 'del') {
             AM.getUserInfoById(_id, function (err, result) {
                 //进行删除操作
                 AM.deleteAccount(_id, function (e) {
-                    operationLog.info({
+                    LM.addLog({
+                        "type": "操作日志",
                         "user": req.session.user.user,
                         "IP": ip,
                         "role": req.session.user.role,
                         "result": {
                             "state": "true",
-                            "msg": "["+ req.session.user.user +"]删除了_id为[" +_id + "]的账号"
+                            "msg": "[" + req.session.user.user + "]删除了_id为[" + _id + "]的账号"
                         },
-                        "date": moment().format('YYYY MMMM Do, a h:mm:ss')
+                        "ua": ua
                     });
                     res.status(200).json("true");
                     res.end();
@@ -405,21 +373,24 @@ module.exports = function (app) {
     app.post('/admin/role/:_id/del', auth, function (req, res) {
         var oper = req.body['oper'];
         var _id = req.params._id;
+        // get user-agent header
+        var ua = parser(req.headers['user-agent']);
         // get use ip address
         var ip = getClientIp(req);
         if (oper == 'del') {
             RP.getRoleResourceByRoleId(_id, function (o) {
                 //进行删除操作
                 RP.deleteRole(_id, function (e) {
-                    operationLog.info({
+                    LM.addLog({
+                        "type": "操作日志",
                         "user": req.session.user.user,
                         "IP": ip,
                         "role": req.session.user.role,
                         "result": {
                             "state": "true",
-                            "msg": "["+ req.session.user.user +"]删除了_id为[" + _id + "]的角色"
+                            "msg": "[" + req.session.user.user + "]删除了_id为[" + _id + "]的角色"
                         },
-                        "date": moment().format('YYYY MMMM Do, a h:mm:ss')
+                        "ua": ua
                     });
                     res.status(200).json("true");
                     res.end();
@@ -441,6 +412,8 @@ module.exports = function (app) {
         var user = email;
         var name = req.body['name'];
         var roleId = req.body['role'];
+        // get user-agent header
+        var ua = parser(req.headers['user-agent']);
         // get use ip address
         var ip = getClientIp(req);
         var _id = req.session.user.initialAccount._id;
@@ -463,15 +436,16 @@ module.exports = function (app) {
                         res.json("false");
                         res.end();
                     } else {
-                        operationLog.info({
+                        LM.addLog({
+                            "type": "操作日志",
                             "user": req.session.user.user,
                             "IP": ip,
                             "role": req.session.user.role,
                             "result": {
                                 "state": "true",
-                                "msg": "["+ req.session.user.user +"]编辑了_id为[" + _id + "]的账号"
+                                "msg": "[" + req.session.user.user + "]编辑了_id为[" + _id + "]的账号"
                             },
-                            "date": moment().format('YYYY MMMM Do, a h:mm:ss')
+                            "ua": ua
                         });
                         res.json("true");
                         res.end();
@@ -503,6 +477,8 @@ module.exports = function (app) {
         var name = req.body['name'];
         var creator = req.session.user.user;
         var description = req.body['description'];
+        // get user-agent header
+        var ua = parser(req.headers['user-agent']);
         // get use ip address
         var ip = getClientIp(req);
         //判断传入的手选权限是否为数组
@@ -532,15 +508,16 @@ module.exports = function (app) {
                     res.json("false");
                     res.end()
                 } else {
-                    operationLog.info({
+                    LM.addLog({
+                        "type": "操作日志",
                         "user": req.session.user.user,
                         "IP": ip,
                         "role": req.session.user.role,
                         "result": {
                             "state": "true",
-                            "msg": "["+ req.session.user.user +"]新建了角色[" + name + "]"
+                            "msg": "[" + req.session.user.user + "]新建了角色[" + name + "]"
                         },
-                        "date": moment().format('YYYY MMMM Do, a h:mm:ss')
+                        "ua": ua
                     });
                     res.json("true");
                     res.end()
@@ -577,6 +554,8 @@ module.exports = function (app) {
         var name = req.body['name'];
         var creator = req.session.user.user;
         var description = req.body['description'];
+        // get user-agent header
+        var ua = parser(req.headers['user-agent']);
         // get use ip address
         var ip = getClientIp(req);
         //判断传入的手选权限是否为数组
@@ -608,15 +587,16 @@ module.exports = function (app) {
                     res.json("false");
                     res.end()
                 } else {
-                    operationLog.info({
+                    LM.addLog({
+                        "type": "操作日志",
                         "user": req.session.user.user,
                         "IP": ip,
                         "role": req.session.user.role,
                         "result": {
                             "state": "true",
-                            "msg": "["+ req.session.user.user +"]编辑了_id为[" + req.session.user.initialRole._id + "]的角色"
+                            "msg": "[" + req.session.user.user + "]编辑了_id为[" + req.session.user.initialRole._id + "]的角色"
                         },
-                        "date": moment().format('YYYY MMMM Do, a h:mm:ss')
+                        "ua": ua
                     });
                     res.json("true");
                     res.end()
@@ -631,7 +611,14 @@ module.exports = function (app) {
      * method: post
      */
     app.post('/admin/log/login/getAllRecords', auth, function (req, res) {
-        res.json(logLogin);
+        LM.getAllLoginLog(function (e, o) {
+            if (e) {
+                console.log(e);
+            } else {
+                res.json(o);
+            }
+
+        })
     });
 
     /**
@@ -640,7 +627,14 @@ module.exports = function (app) {
      * method: post
      */
     app.post('/admin/log/operation/getAllRecords', auth, function (req, res) {
-        res.json(logOperation);
+        LM.getAllOperationLog(function (e, o) {
+            if (e) {
+                console.log(e);
+            } else {
+                res.json(o);
+            }
+
+        })
     });
     /* ********************************************** 页面级路由 **************************************************** */
     /**
@@ -735,7 +729,8 @@ module.exports = function (app) {
         var ua = parser(req.headers['user-agent']);
         // get use ip address
         var ip = getClientIp(req);
-        loginLog.info({
+        LM.addLog({
+            "type": "登录日志",
             "user": req.session.user.user,
             "IP": ip,
             "role": req.session.user.Role.name,
@@ -743,8 +738,7 @@ module.exports = function (app) {
                 "state": "true",
                 "msg": "退出平台!"
             },
-            "ua": ua,
-            "date": moment().format('YYYY MMMM Do, a h:mm:ss')
+            "ua": ua
         });
         res.clearCookie('user');
         res.clearCookie('pass');
@@ -775,9 +769,23 @@ module.exports = function (app) {
      * method: GET
      */
     app.get('/admin', auth, pageAuthority, function (req, res) {
-        res.render('./admin/index', {
-            title: "山西-吉兆 -- 管理首页",
-            udata: req.session.user
+        var dashboardInfo = {};
+        AM.getAllRecords(function (e, a) {
+            dashboardInfo.userNum = a.length;
+
+            RP.getAllRecords(function (e, b) {
+                dashboardInfo.roleNum = b.length
+
+                LM.getAllRecords(function (e, c) {
+                    dashboardInfo.logNum = c.length
+
+                    res.render('./admin/index', {
+                        title: "山西-吉兆 -- 管理首页",
+                        udata: req.session.user,
+                        dashboardInfo: dashboardInfo
+                    });
+                })
+            })
         });
     });
 

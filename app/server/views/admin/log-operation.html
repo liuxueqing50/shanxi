@@ -361,7 +361,7 @@
             colNames: ['_id', '日志类型', '用户名', '用户角色', '操作时间', '用户IP','操作详情'],
             colModel: [
                 {name: '_id', index: '_id', width: 80, sorttype: "text", hidden: true, editable: false, editrules: {edithidden: true},key: true},
-                {name: 'name', index: '日志类型', width: 20, editable: true, sorttype: "text", editrules: {edithidden: true, required: true, email: true}, editoptions: {minlength: 8, maxlength: 16}},
+                {name: 'type', index: '日志类型', width: 20, editable: true, sorttype: "text", editrules: {edithidden: true, required: true, email: true}, editoptions: {minlength: 8, maxlength: 16}},
                 {name: 'user', index: '用户名', width: 40, editable: true, sorttype: "text"},
                 {name: 'role', index: '用户角色', width: 20, editable: false, sorttype: "text", formatter: highlight},
                 {name: 'date', index: '操作时间', width: 40, datefmt: "MMMM Do YYYY, h:mm:ss a", editable: false, sorttype: "date"},
@@ -426,11 +426,6 @@
                 url: "/admin/log/operation/getAllRecords",
                 type: "POST",
                 success: function (result) {
-
-                    for (var i = 0; i < result.length; i++) {
-                        result[i] = eval('(' + result[i] + ')')
-                    }
-                    result.reverse();
                     // set the new data
                     $("#grid-table").jqGrid('setGridParam', {data: result});
                     // hide the show message

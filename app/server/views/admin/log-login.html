@@ -371,7 +371,7 @@
                     key: true
                 },
                 {
-                    name: 'name',
+                    name: 'type',
                     index: '日志类型',
                     width: 60,
                     editable: true,
@@ -454,11 +454,6 @@
                 url: "/admin/log/login/getAllRecords",
                 type: "POST",
                 success: function (result) {
-
-                    for (var i = 0; i < result.length; i++) {
-                        result[i] = eval('(' + result[i] + ')')
-                    }
-                    result.reverse();
                     // set the new data
                     $("#grid-table").jqGrid('setGridParam', {data: result});
                     // hide the show message
