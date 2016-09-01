@@ -336,15 +336,13 @@
 
 
         function highlight(cellvalue, options, rowObject) {
-
             var temp = "";
-
             if (cellvalue == "超级管理员") {
                 temp = '<span class="label label-sm label-danger">' + cellvalue + '</span>';
             } else if (cellvalue == "系统管理员") {
                 temp = '<span class="label label-sm label-warning">' + cellvalue + '</span>';
             } else {
-                temp = '<span class="label label-sm label-success">' + cellvalue + '</span>';
+                temp = '<span class="label label-sm label-info">' + cellvalue + '</span>';
             }
 
             return temp
@@ -368,7 +366,7 @@
                     index: '_id',
                     width: 80,
                     sorttype: "text",
-                    hidden: true,
+                    hidden: false,
                     editable: true,
                     editrules: {edithidden: true},
                     key: true

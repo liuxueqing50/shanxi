@@ -1,1 +1,4 @@
-﻿
+﻿{"name":"操作日志","hostname":"Liuwei-PC","pid":10084,"level":30,"user":"admin@ohcloud.org","IP":"::1","role":"系统管理员","result":{"state":"true","msg":"[admin@ohcloud.org]编辑了_id为[57c64c3c95cab0c42678e692]的角色"},"date":"2016 八月 31日, 中午 11:30:36","msg":"","time":"2016-08-31T03:30:36.097Z","v":0}
+{"name":"操作日志","hostname":"Liuwei-PC","pid":10084,"level":30,"user":"admin@ohcloud.org","IP":"::1","role":"系统管理员","result":{"state":"true","msg":"[admin@ohcloud.org]新建了角色[普通用户]"},"date":"2016 八月 31日, 中午 11:31:49","msg":"","time":"2016-08-31T03:31:49.809Z","v":0}
+{"name":"操作日志","hostname":"Liuwei-PC","pid":10084,"level":30,"user":"admin@ohcloud.org","IP":"::1","role":"系统管理员","result":{"state":"true","msg":"[admin@ohcloud.org]新建了帐号[116402157@qq.com], 并设置了角色[普通用户]"},"date":"2016 八月 31日, 下午 1:32:42","msg":"","time":"2016-08-31T05:32:42.034Z","v":0}
+{"name":"操作日志","hostname":"Liuwei-PC","pid":10084,"level":30,"user":"admin@ohcloud.org","IP":"::1","role":"系统管理员","result":{"state":"true","msg":"[admin@ohcloud.org]修改了[116402157@qq.com]的密码!"},"date":"2016 八月 31日, 下午 1:32:54","msg":"","time":"2016-08-31T05:32:54.900Z","v":0}

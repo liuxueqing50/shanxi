@@ -41,6 +41,7 @@ module.exports = function() {
             store: new MongoStore({ url: dbURL })
         })
     );
+    require('./log4js');
     app.use(flash());
 
     require('../app/server/routes')(app);
