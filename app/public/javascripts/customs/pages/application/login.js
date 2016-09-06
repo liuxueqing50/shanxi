@@ -23,9 +23,9 @@ $(document).ready(function () {
             // Append error within linked label
             console.log( $(element));
             $(element)
-                .after(error)
+                .after(error);
         },
-        errorElement: "span",
+        errorElement: 'li',
         rules: {
             user: {
                 required: true,

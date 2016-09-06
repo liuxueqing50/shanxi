@@ -52,16 +52,60 @@ exports.getAllRecords = function (callback) {
 
 /* get all login log */
 exports.getAllLoginLog = function (callback) {
-    Log.find({"type": "登录日志"}).sort({"date": -1}).toArray(function (e, res) {
+    Log.find({"type": "login"}).toArray(function (e, res) {
         if (e) callback(e);
         else callback(null, res);
     });
 };
 
+/* get login log use pagination */
+exports.getLoginLogByPagination = function (newData, callback) {
+    var page = parseInt(newData.page);
+    var rows = parseInt(newData.rows);
+    var sidx = newData.sidx;
+    var sord = parseInt(newData.sord);
+    var sortStr = {};   //排序查询字符串！
+    sortStr[sidx] = sord;
+    Log.find({"type": "login"}).sort(sortStr).skip((page - 1) * rows).limit(rows).toArray(function (err, rs) {
+        if (err) {
+            callback(err)
+        } else {
+            //计算数据总数
+            Log.find({"type": "login"}).toArray(function (e, res) {
+                var totalPages = Math.ceil(res.length / rows);
+                var jsonArray = {rows: rs, total: totalPages};
+                callback(jsonArray)
+            });
+        }
+    });
+};
+
 /* get all operation log */
 exports.getAllOperationLog = function (callback) {
-    Log.find({"type": "操作日志"}).sort({"date": -1}).toArray(function (e, res) {
+    Log.find({"type": "operation"}).toArray(function (e, res) {
         if (e) callback(e);
         else callback(null, res);
+    });
+};
+
+/* get operation log use pagination */
+exports.getOperationLogByPagination = function (newData, callback) {
+    var page = parseInt(newData.page);
+    var rows = parseInt(newData.rows);
+    var sidx = newData.sidx;
+    var sord = parseInt(newData.sord);
+    var sortStr = {};   //排序查询字符串！
+    sortStr[sidx] = sord;
+    Log.find({"type": "operation"}).sort(sortStr).skip((page - 1) * rows).limit(rows).toArray(function (err, rs) {
+        if (err) {
+            callback(err)
+        } else {
+            //计算数据总数
+            Log.find({"type": "operation"}).toArray(function (e, res) {
+                var totalPages = Math.ceil(res.length / rows);
+                var jsonArray = {rows: rs, total: totalPages};
+                callback(jsonArray)
+            });
+        }
     });
 };

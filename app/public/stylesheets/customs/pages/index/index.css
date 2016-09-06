@@ -1,7 +1,6 @@
 /* *****************************- 顶部导航条a标签的默认效果  -******************************** */
 .navbar .navbar-nav>li>a {
     background: transparent;
-    color: rgba(247, 247 ,247, .75);
 }
 .navbar-default .navbar-nav>.active>a,
 .navbar-default .navbar-nav>.active>a:focus,

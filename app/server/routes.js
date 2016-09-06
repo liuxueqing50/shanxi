@@ -30,7 +30,7 @@ var topNavData = [
     },
     {
         "NavName": "音频测试",
-        "link": "/user/test"
+        "link": "/user/audioTest"
     },
     {
         "NavName": "websocket测试",
@@ -123,7 +123,8 @@ module.exports = function (app) {
         AM.manualLogin(user, pass, function (e, o) {
             if (!o) {
                 LM.addLog({
-                    "type": "登录日志",
+                    "type": "login",
+                    "name": "登陆日志",
                     "user": user,
                     "IP": ip,
                     "role": "未登录",
@@ -143,7 +144,8 @@ module.exports = function (app) {
                     RP.getPemissionByUser(req.session.user, function (result) {
                         req.session.user.Role = result[0];
                         LM.addLog({
-                            "type": "登录日志",
+                            "type": "login",
+                            "name": "登陆日志",
                             "user": user,
                             "IP": ip,
                             "role": req.session.user.Role.name,
@@ -159,7 +161,8 @@ module.exports = function (app) {
                     RP.getPemissionByUser(req.session.user, function (result) {
                         req.session.user.Role = result[0];
                         LM.addLog({
-                            "type": "登录日志",
+                            "type": "login",
+                            "name": "登陆日志",
                             "user": user,
                             "IP": ip,
                             "role": req.session.user.Role.name,
@@ -206,6 +209,59 @@ module.exports = function (app) {
     });
 
     /**
+     * 路由说明： 获取登陆日志列表的数据API
+     * 鉴权说明： 登陆校验
+     * method: post
+     */
+    app.post('/admin/log/login/getAllRecords', auth, function (req, res) {
+        var page = req.body['page'];   //页码
+        var rows = req.body['rows'];   //行数
+        var sidx = req.body['sidx'];            //排序关键字
+        var sord = (function () {                 //排序方式
+            if (req.body['sord'] == 'asc') {
+                return 1
+            } else if (req.body['sord'] == 'desc') {
+                return -1
+            }
+        })();
+        LM.getLoginLogByPagination({
+            page: page,
+            rows: rows,
+            sidx: sidx,
+            sord: sord
+        }, function (result) {
+            res.json(result);
+        })
+    });
+
+    /**
+     * 路由说明： 获取操作日志列表的数据API
+     * 鉴权说明： 登陆校验
+     * method: post
+     */
+    app.post('/admin/log/operation/getAllRecords', auth, function (req, res) {
+        var page = req.body['page'];   //页码
+        var rows = req.body['rows'];   //行数
+        var sidx = req.body['sidx'];            //排序关键字
+        var sord = (function () {                 //排序方式
+            if (req.body['sord'] == 'asc') {
+                return 1
+            } else if (req.body['sord'] == 'desc') {
+                return -1
+            }
+        })();
+        LM.getOperationLogByPagination({
+            page: page,
+            rows: rows,
+            sidx: sidx,
+            sord: sord
+        }, function (result) {
+            res.json(result);
+        })
+    });
+
+
+    /**
      * 路由说明： 新建用户数据API
      * 鉴权说明： 登陆校验
      * method: post
@@ -241,7 +297,8 @@ module.exports = function (app) {
                         res.end();
                     } else {
                         LM.addLog({
-                            "type": "操作日志",
+                            "type": "operation",
+                            "name": "操作日志",
                             "user": req.session.user.user,
                             "IP": ip,
                             "role": req.session.user.role,
@@ -275,7 +332,8 @@ module.exports = function (app) {
         if (password == pass) {
             AM.updatePassword(email, pass, function () {
                 LM.addLog({
-                    "type": "操作日志",
+                    "type": "operation",
+                    "name": "操作日志",
                     "user": req.session.user.user,
                     "IP": ip,
                     "role": req.session.user.role,
@@ -345,7 +403,8 @@ module.exports = function (app) {
                 //进行删除操作
                 AM.deleteAccount(_id, function (e) {
                     LM.addLog({
-                        "type": "操作日志",
+                        "type": "operation",
+                        "name": "操作日志",
                         "user": req.session.user.user,
                         "IP": ip,
                         "role": req.session.user.role,
@@ -382,7 +441,8 @@ module.exports = function (app) {
                 //进行删除操作
                 RP.deleteRole(_id, function (e) {
                     LM.addLog({
-                        "type": "操作日志",
+                        "type": "operation",
+                        "name": "操作日志",
                         "user": req.session.user.user,
                         "IP": ip,
                         "role": req.session.user.role,
@@ -437,7 +497,8 @@ module.exports = function (app) {
                         res.end();
                     } else {
                         LM.addLog({
-                            "type": "操作日志",
+                            "type": "operation",
+                            "name": "操作日志",
                             "user": req.session.user.user,
                             "IP": ip,
                             "role": req.session.user.role,
@@ -509,7 +570,8 @@ module.exports = function (app) {
                     res.end()
                 } else {
                     LM.addLog({
-                        "type": "操作日志",
+                        "type": "operation",
+                        "name": "操作日志",
                         "user": req.session.user.user,
                         "IP": ip,
                         "role": req.session.user.role,
@@ -588,7 +650,8 @@ module.exports = function (app) {
                     res.end()
                 } else {
                     LM.addLog({
-                        "type": "操作日志",
+                        "type": "operation",
+                        "name": "操作日志",
                         "user": req.session.user.user,
                         "IP": ip,
                         "role": req.session.user.role,
@@ -603,38 +666,6 @@ module.exports = function (app) {
                 }
             })
         });
-    });
-
-    /**
-     * 路由说明： 获取登陆日志列表的数据API
-     * 鉴权说明： 登陆校验
-     * method: post
-     */
-    app.post('/admin/log/login/getAllRecords', auth, function (req, res) {
-        LM.getAllLoginLog(function (e, o) {
-            if (e) {
-                console.log(e);
-            } else {
-                res.json(o);
-            }
-
-        })
-    });
-
-    /**
-     * 路由说明： 获取操作日志列表的数据API
-     * 鉴权说明： 登陆校验
-     * method: post
-     */
-    app.post('/admin/log/operation/getAllRecords', auth, function (req, res) {
-        LM.getAllOperationLog(function (e, o) {
-            if (e) {
-                console.log(e);
-            } else {
-                res.json(o);
-            }
-
-        })
     });
     /* ********************************************** 页面级路由 **************************************************** */
     /**
@@ -730,7 +761,8 @@ module.exports = function (app) {
         // get use ip address
         var ip = getClientIp(req);
         LM.addLog({
-            "type": "登录日志",
+            "type": "login",
+            "name": "登陆日志",
             "user": req.session.user.user,
             "IP": ip,
             "role": req.session.user.Role.name,
@@ -960,6 +992,19 @@ module.exports = function (app) {
         res.render('./admin/log-operation.html', {
             title: "山西-吉兆 -- 日志管理管理",
             udata: req.session.user
+        });
+    });
+
+    /**
+     * 路由说明： 音频测试页面
+     * 鉴权说明： 登陆校验, 页面访问权限校验
+     * method: GET
+     */
+    app.get('/user/audioTest', auth, pageAuthority, function (req, res) {
+        res.render('./application/audioTest', {
+            title: "山西-吉兆 -- 音频测试",
+            udata: req.session.user,
+            topNavData: topNavData
         });
     });
 

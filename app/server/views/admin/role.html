@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
@@ -117,7 +117,7 @@
 
             <li class="active open hover">
                 <a href="/admin/role">
-                    <i class="menu-icon fa fa-tag"></i>
+                    <i class="menu-icon fa fa-unlock-alt"></i>
                     <span class="menu-text"> 角色管理 </span>
                 </a>
                 <b class="arrow"></b>
@@ -710,7 +710,7 @@
         });
 
         //延时执行， 等待Dom先生成
-        setTimeout(function () {
+        setInterval(function () {
             $(".J_del").on("click", J_del);
         }, 20);
 
