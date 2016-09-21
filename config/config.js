@@ -5,7 +5,7 @@ module.exports = {
     port: 3000,
     mongodb: {
         dbName: "shanxi",
-        dbHost: "localhost",
+        dbHost: "192.168.1.9",
         dbPort: 27017
     },
     email: {

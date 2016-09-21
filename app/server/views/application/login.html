@@ -35,164 +35,94 @@
     <![endif]-->
 
     <!-- inline styles related to this page -->
-    <link rel="stylesheet" href="/stylesheets/customs/pages/form.css"/>
+    <link rel="stylesheet" href="/stylesheets/customs/pages/application/login.css"/>
 </head>
 
-<body class="login-layout blur-login">
-<div class="main-container">
-    <div class="main-content">
-        <div class="row">
-            <div class="col-sm-10 col-sm-offset-1">
-                <div class="login-container">
-                    <div class="center">
-                        <h1>
-                            <i class="ace-icon fa fa-cloud green"></i>
-                            <span class="red">山西-吉兆</span>
-                            <span class="white" id="id-text2"> FM监听系统</span>
-                        </h1>
-                        <h4 class="light-blue" id="id-company-text">&copy; 智和云</h4>
-                    </div>
+<body data-vide-bg="mp4: ./video/sunset.mp4">
 
-                    <div class="space-6"></div>
+<!-- 顶部留白 -->
+<header></header>
 
-                    <div class="position-relative">
-                        <div id="login-box" class="login-box visible widget-box no-border">
-                            <div class="widget-body">
-                                <div class="widget-main">
-                                    <h4 class="header blue lighter bigger">
-                                        <i class="ace-icon fa fa-coffee green"></i>
-                                        登录
-                                    </h4>
+<div class="wrap">
+    <div class="content">
+        <div class="inner-box clearfix">
+            <div class="login-box">
 
-                                    <div class="space-6"></div>
+                <h4 class="header blue lighter bigger">
+                    <i class="ace-icon fa fa-sign-in"></i>
+                    平台登录
+                </h4>
+                <!-- 表单验证提示信息 -->
+                <ul class="login-info"></ul>
 
-                                    <form id="signinForm">
-                                        <fieldset>
-                                            <label class="block clearfix">
+                <div class="space-6"></div>
+
+                <form id="signinForm" novalidate="novalidate" class="validator-form">
+                    <fieldset>
+                        <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
 															<input type="text" class="form-control" name="user"
-                                                                   placeholder="Email地址"/>
+                                                                   placeholder="Email地址">
 															<i class="ace-icon fa fa-user"></i>
 														</span>
-                                            </label>
+                        </label>
 
-                                            <label class="block clearfix">
+                        <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
 															<input type="password" name="pass" class="form-control"
-                                                                   placeholder="密码"/>
+                                                                   placeholder="密码">
 															<i class="ace-icon fa fa-lock"></i>
 														</span>
-                                            </label>
+                        </label>
 
-                                            <label class="block clearfix">
+                        <label class="block clearfix">
 														<span class="col-xs-7 captcha-ipt input-icon input-icon-right">
 															<input id="captcha" type="text" name="captcha"
-                                                                   class="form-control" placeholder="验证码"/>
+                                                                   class="form-control" placeholder="验证码">
 														</span>
-                                                <iframe id="loginIframe" class="col-xs-5 captcha-svg"
-                                                        src="/captcha"></iframe>
-                                            </label>
+                            <iframe id="loginIframe" class="col-xs-5 captcha-svg" src="/captcha" style="height: 34px;overflow: hidden"></iframe>
+                        </label>
 
-                                            <div class="space"></div>
+                        <div class="space"></div>
 
-                                            <div class="clearfix">
-                                                <label class="inline">
-                                                    <input name="remember-me" type="checkbox" class="ace"/>
-                                                    <span class="lbl"> 7天免登录</span>
-                                                </label>
+                        <div class="clearfix">
+                            <label class="inline">
+                                <input name="remember-me" type="checkbox" class="ace">
+                                <span class="lbl"> 7天免登录</span>
+                            </label>
 
-                                                <button type="submit"
-                                                        class="width-35 pull-right btn btn-sm btn-primary">
-                                                    <i class="ace-icon fa fa-key"></i>
-                                                    <span class="bigger-110">登录</span>
-                                                </button>
-                                            </div>
+                            <button type="submit" class="width-35 pull-right btn btn-sm">
+                                <i class="ace-icon fa fa-sign-in"></i>
+                                <span class="bigger-110">登录</span>
+                            </button>
+                        </div>
 
-                                            <div class="space-4"></div>
-                                        </fieldset>
-                                    </form>
+                        <div class="space-4"></div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<footer>
 
-                                    <div class="social-or-login center">
-                                        <span class="bigger-110">其它登录方式</span>
-                                    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 logo">
+                <img class="logo" src="/images/customs/application/905logo.png" alt=""/>
+            </div>
+            <div class="col-md-6 title">
+                <h2>中国高速交通广播网<br>湖南FM90.5系统监测平台</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <p class="copyright">Copyright © 2016-2017 智和云 Application © 2016-2017</p>
+    </div>
 
-                                    <div class="space-6"></div>
+</footer>
 
-                                    <div class="social-login center">
-                                        <a class="btn btn-primary">
-                                            <i class="ace-icon fa fa-qq"></i>
-                                        </a>
-
-                                        <a class="btn btn-success">
-                                            <i class="ace-icon fa fa-weixin"></i>
-                                        </a>
-
-                                        <a class="btn btn-danger">
-                                            <i class="ace-icon fa fa-weibo"></i>
-                                        </a>
-                                    </div>
-                                </div><!-- /.widget-main -->
-
-                                <div class="toolbar clearfix">
-                                    <div>
-                                        <a href="#" data-target="#forgot-box" class="forgot-password-link">
-                                            <i class="ace-icon fa fa-arrow-left"></i>
-                                            查看版本更新信息
-                                        </a>
-                                    </div>
-                                </div>
-                            </div><!-- /.widget-body -->
-                        </div><!-- /.login-box -->
-
-                        <div id="forgot-box" class="forgot-box widget-box no-border">
-                            <div class="widget-body">
-                                <div class="widget-main">
-                                    <h4 class="header red2 lighter bigger">
-                                        <i class="ace-icon fa fa-info-circle"></i>
-                                        版本更新信息
-                                    </h4>
-
-                                    <div class="space-6"></div>
-                                    <p>
-                                        1、将平台整体从sqlServer迁移到MongoDb;
-                                    </p>
-                                    <p>
-                                        2、增加后台管理系统：包含管理首页、用户管理、角色管理、操作日志4个功能模块
-                                    </p>
-
-                                </div><!-- /.widget-main -->
-
-                                <div class="toolbar center">
-                                    <a href="#" data-target="#login-box" class="back-to-login-link">
-                                        返回登陆页面
-                                        <i class="ace-icon fa fa-arrow-right"></i>
-                                    </a>
-                                </div>
-                            </div><!-- /.widget-body -->
-                        </div><!-- /.forgot-box -->
-                    </div><!-- /.position-relative -->
-
-                    <div class="navbar-fixed-top align-right">
-                        <br/>
-                        &nbsp;
-                        <a id="btn-login-dark" href="#">Dark</a>
-                        &nbsp;
-                        <span class="blue">/</span>
-                        &nbsp;
-                        <a id="btn-login-blur" href="#">Blur</a>
-                        &nbsp;
-                        <span class="blue">/</span>
-                        &nbsp;
-                        <a id="btn-login-light" href="#">Light</a>
-                        &nbsp; &nbsp; &nbsp;
-                    </div>
-                </div>
-            </div><!-- /.col -->
-        </div><!-- /.row -->
-    </div><!-- /.main-content -->
-</div><!-- /.main-container -->
-
-<!-- 注册提示信息模态框 -->
+<!-- 登陆提示信息模态框 -->
 <div class="modal fade" id="formInfoBox" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -227,6 +157,7 @@
 <script src="/bower_components/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="/javascripts/Ace_template_js/bootstrap.min.js"></script>
 <script src="/bower_components/jquery-validation/dist/localization/messages_zh.js"></script>
+<script src="/bower_components/jquery.vide/jquery.vide.js"></script>
 <script src="/javascripts/customs/pages/application/login.js"></script>
 
 <!-- inline scripts related to this page -->

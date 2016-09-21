@@ -114,6 +114,14 @@ exports.updateAccount = function (newData, callback) {
     });
 }
 
+
+exports.getAccountCount = function (callback) {
+    accounts.find().toArray(function (e, res) {
+        if (e) callback(e);
+        else callback(null, res);
+    });
+}
+
 exports.getUserInfoById = function (_id, callback) {
     accounts.findOne({"_id": ObjectId(_id)}, function (e, o) {
         if (e) {
